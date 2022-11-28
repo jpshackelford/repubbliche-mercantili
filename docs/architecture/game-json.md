@@ -247,15 +247,9 @@ When taking an investment round, the galley stays at its current location. The p
 
 The following _load_ actions are permitted during phase 1.
 
-| Action         | Description | 
-| -------------- | --------------------------- | 
-| LOAD_CARGO     | Purchase one or more goods from the port at which the galley is moored and load them on the galley. |
-| SWAP           | Swap goods and sailors between two galleys moored in a port owned by the galley owner. |
-| LOAD_SAILORS   | Load sailors from the port into the galley if the port is owned by the galley owner. |
-| REST_SAILORS   | Unload sailors from the galley into the port if the port is owned by the galley owner. |
-| WASTE_CARGO    | Drop a good from the galley into the sea. |
+#### LOAD_CARGO 
 
-#### LOAD_CARGO transaction
+Purchase one or more goods from the port at which the galley is moored and load them on the galley. 
 
 Inputs:
 
@@ -263,7 +257,9 @@ Validation Rules:
 
 Example JSON:
 
-#### SWAP transaction
+#### SWAP 
+
+Swap goods and sailors between two galleys moored in a port owned by the galley owner.
 
 Inputs:
 
@@ -271,25 +267,45 @@ Validation Rules:
 
 Example JSON:
 
+#### LOAD_SAILORS
+
+Load sailors from the port into the galley if the port is owned by the galley owner.
+
+#### UNLOAD_SAILORS
+
+Unload sailors from the galley into the port if the port is owned by the galley owner.
+
+#### WASTE_CARGO
+
+Drop a good from the galley into the sea. 
 
 ### Phase 2 actions
 
 The following _move_ actions are permitted during phase 2.
 
-| Action         | Description | 
-| -------------- | --------------------------- | 
-| MOVE           | Move the galley zero or more spaces with the maximum movement being the number of sailors present on the galley. |
+#### MOVE_GALLEY
+
+Move the galley zero or more spaces with the maximum movement being the number of sailors present on the galley. 
 
 ### Phase 3 actions
 
 The following _unload_ actions are permitted during phase 3.
 
-| Action         | Description | 
-| -------------- | --------------------------- | 
-| DELIVER        | Unload one or more goods from the galley into the destination port, provided such goods have not already been delivered to that port.|
-| CLAIM          | Claim an unowned port by unloading one or more sailors into the port. |
-| ATTACK_PORT    | Engage a port belonging to another player in battle. |
-| ATTACK_GALLEY  | Engage a galley belonging to another player in battle.|
+#### DELIVER
+
+Unload one or more goods from the galley into the destination port, provided such goods have not already been delivered to that port.
+
+#### CLAIM_PORT
+
+Claim an unowned port by unloading one or more sailors into the port.
+
+#### ATTACK_PORT
+
+Engage a port belonging to another player in battle.
+
+#### ATTACK_GALLEY
+
+Engage a galley belonging to another player in battle.
 
 ## Drawing a card and advancing on the turn track
 
