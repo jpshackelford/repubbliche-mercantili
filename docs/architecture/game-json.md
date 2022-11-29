@@ -23,7 +23,14 @@ Example JSON:
     },
     "active_galley": 0,
     "players": {},
-    "bank": {}
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    }
 }    
 ```
 
@@ -43,7 +50,14 @@ how many sailors to give each player because we do not yet know how many players
     },
     "active_galley": 0,
     "players": {},
-    "bank": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    },
     "players": {
         "P1": {
             "name": "player 1 name",
@@ -81,7 +95,14 @@ TODO Remember to setup the bank with the correct count of available materials.
     },
     "active_galley": 0,
     "players": {},
-    "bank": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    },
     "player_count": 4,
     "players": {
         "P1": {
@@ -116,7 +137,14 @@ Two additional players join. We now have enough players to begin the game.
     },
     "active_galley": 0,
     "players": {},
-    "bank": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    },
     "player_count": 4,
     "players": {
         "P1": {
@@ -162,7 +190,14 @@ Three sailors move from the player's supply into the choosen galley.
         "drawn": []
     },
     "active_galley": 0,
-    "bank": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    },
     "player_count": 4,
     "players": {
         "P1": {
