@@ -218,7 +218,7 @@ Three sailors move from the player's supply into the choosen galley.
 
 TODO we need to add location of galley on the board. That could be stored in either the galley section or the port section, if we add the single sea space to the list of ports.  We will work on transactions and then decide which makes most sense.
 
-## A game turn
+## An ordinary galley game turn
 
 The order of play is determined by the galleys and galley ownership. 
 Play begins with the first galley. Its owner plays the galley's turn 
@@ -231,49 +231,6 @@ are grouped into three phases which must always be played in the following order
 * Phase 1 - Load
 * Phase 2 - Move
 * Phase 3 - Unload
-
-### Investment round
-
-When taking an investment round, the galley stays at its current location. The player may then make any number of the following purchases.
-
-| Item      | Cost                        | Note |
-| --------- | --------------------------- | -------- |
-| Sailor    | 1                           | Sailors may be placed in any port owned by the player or galley in a port owned by the player. |
-| Galley    | 1 x number of galleys owned | Galleys may be placed in any port owned by the player. Only one galley may be purchased per investment round.|
-| Basilica  | 2                           | Basilicas may be placed in any port owned by the player in which gold or marble are present. Only one Basilica may exist in any given port. |
-| Fort      | 2                           | Forts may be placed in any port owned by the player in which stone or wood are present.  Only one fort may exist in any given port.|
-
-Validation Rules:
-1. One can't spend more money than one has.
-2. One can't buy more sailors than one has.
-3. One can't place more sailors in a port than the spaces available for sailors.
-4. Only galleys in a port one ones may accept new sailors.
-5. Only ports one owns can accept new sailors.
-6. Only one galley may be purchased as part of this investment round.
-7. A galley must be placed in one's own port.
-8. A galley must have at least one sailor or it will sink.
-10. One may only purchase unowned galleys.
-11. Basilicas must be placed in a port with gold and marble. 
-12. Basilicas cannot be purchased if they cannot be placed.
-13. Forts must be placed in a port with stone and wood. 
-14. Forts cannot be purchased if they cannot be placed.
-
-Inputs for galley purchase:
-1. Galley number.
-2. Destination port number.
-
-Inputs for a sailor purchase:
-1. number of sailors.
-2. destination galley or port
-
-Inputs for a basilica purchase:
-1. destination port
-
-Inputs for a fort purchase:
-1. destination port 
-
-With an investment round some actions are allowed:
-
 
 ### Phase 1 actions
 
@@ -338,6 +295,72 @@ Engage a port belonging to another player in battle.
 #### ATTACK_GALLEY
 
 Engage a galley belonging to another player in battle.
+
+## Investment round 
+
+As an alternative to an ordinary galley game turn, a player make take an invetment round. When taking an investment round, the galley stays at its current location. The player may then make any number of the following purchases.
+
+| Item      | Cost                        | Note |
+| --------- | --------------------------- | -------- |
+| Sailor    | 1                           | Sailors may be placed in any port owned by the player or galley in a port owned by the player. |
+| Galley    | 1 x number of galleys owned | Galleys may be placed in any port owned by the player. Only one galley may be purchased per investment round.|
+| Basilica  | 2                           | Basilicas may be placed in any port owned by the player in which gold or marble are present. Only one Basilica may exist in any given port. |
+| Fort      | 2                           | Forts may be placed in any port owned by the player in which stone or wood are present.  Only one fort may exist in any given port.|
+
+### Validations that always apply
+
+Validation Rules:
+1. One can't spend more money than one has.
+
+### Investment Round Actions
+
+#### PURCHASE_GALLEY
+
+Inputs for galley purchase:
+1. Galley number.
+2. Destination port number.
+
+Validation Rules:
+1. Only one galley may be purchased as part of this investment round.
+2. One may only purchase unowned galleys.
+3. A galley must be placed in one's own port.
+4. A galley must have at least one sailor or it will sink.
+
+#### PURCHASE_SAILORS
+
+Inputs for a sailor purchase:
+1. number of sailors.
+2. destination galley or port
+
+Validation Rules:
+1. One can't buy more sailors than one has.
+2. One can't place more sailors in a port than the spaces available for sailors.
+3. Only galleys in a port one ones may accept new sailors.
+4. Only ports one owns can accept new sailors.
+
+#### PURCHASE_BASILICA
+
+Inputs for a basilica purchase:
+1. destination port
+
+Validation Rules:
+1. Basilicas must be placed in a port with gold and marble. 
+2. Basilicas may not be placed in a port which already has a basilica.
+3. Basilicas cannot be purchased if they cannot be placed.
+
+#### PURCHASE_FORT
+
+Inputs for a fort purchase:
+1. destination port 
+
+Validation Rules:
+1. Forts must be placed in a port with stone and wood. 
+2. Forts may not be placed in a port which already has a fort.
+3. Forts cannot be purchased if they cannot be placed.
+
+#### Other investment round actions
+
+With an investment round some actions are allowed so that sailors may be placed in newly purchased galleys and distributed to ports.
 
 ## Drawing a card and advancing on the turn track
 
