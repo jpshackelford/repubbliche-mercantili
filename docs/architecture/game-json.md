@@ -243,6 +243,38 @@ When taking an investment round, the galley stays at its current location. The p
 | Basilica  | 2                           | Basilicas may be placed in any port owned by the player in which gold or marble are present. Only one Basilica may exist in any given port. |
 | Fort      | 2                           | Forts may be placed in any port owned by the player in which stone or wood are present.  Only one fort may exist in any given port.|
 
+Validation Rules:
+1. One can't spend more money than one has.
+2. One can't buy more sailors than one has.
+3. One can't place more sailors in a port than the spaces available for sailors.
+4. Only galleys in a port one ones may accept new sailors.
+5. Only ports one owns can accept new sailors.
+6. Only one galley may be purchased as part of this investment round.
+7. A galley must be placed in one's own port.
+8. A galley must have at least one sailor or it will sink.
+10. One may only purchase unowned galleys.
+11. Basilicas must be placed in a port with gold and marble. 
+12. Basilicas cannot be purchased if they cannot be placed.
+13. Forts must be placed in a port with stone and wood. 
+14. Forts cannot be purchased if they cannot be placed.
+
+Inputs for galley purchase:
+1. Galley number.
+2. Destination port number.
+
+Inputs for a sailor purchase:
+1. number of sailors.
+2. destination galley or port
+
+Inputs for a basilica purchase:
+1. destination port
+
+Inputs for a fort purchase:
+1. destination port 
+
+With an investment round some actions are allowed:
+
+
 ### Phase 1 actions
 
 The following _load_ actions are permitted during phase 1.
