@@ -7,7 +7,7 @@ with each action transforming the game JSON file.
 
 ## New game template
 
-Example JSON:
+##### Example JSON:
 
 ```json
 {
@@ -38,7 +38,7 @@ A new game with no players. (It isn't clear whether this would be a real game st
 
 The game hash uniquely identifies the game.
 
-Example JSON:
+##### Example JSON:
 
 ```json
 {
@@ -66,7 +66,7 @@ Example JSON:
 }    
 ```
 
-Redis Transaction:
+##### Redis Transaction:
 ```
 JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $ '{
     "creator": "username0123",
@@ -133,7 +133,7 @@ how many sailors to give each player because we do not yet know how many players
 }   
 ```
 
-Redis Transaction:
+##### Redis Transaction:
 ```
 JSON.NUMINCRBY game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players_joined 1
 
@@ -151,6 +151,8 @@ JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players.P1 '{
 We now four players. Because we know the number of players, we can set the turn track and number 
 of sailors for each player. We set a player_count because we could choose how many players in the
 game even before all the players have joined.
+
+##### Example JSON:
 
 ```json
 {
@@ -194,6 +196,8 @@ game even before all the players have joined.
 ## Additional players join
 
 Two additional players join. We now have enough players to begin the game.
+
+##### Example JSON:
 
 ```json
 {
@@ -248,6 +252,8 @@ Two additional players join. We now have enough players to begin the game.
 
 Here player 1 selects a port and galley. Three sailors move from the player's supply to his choosen port. 
 Three sailors move from the player's supply into the choosen galley. 
+
+##### Example JSON:
 
 ```json
 {
