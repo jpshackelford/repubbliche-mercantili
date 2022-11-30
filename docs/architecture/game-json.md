@@ -42,7 +42,7 @@ Example JSON:
 ```json
 {
     "creator": "username0123",
-    "creation_time: "2022-11-30T00:24:08.462Z",
+    "creation_time": "2022-11-30T00:24:08.462Z",
     "game_hash": "2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3",
     "turntrack": {
         "players": "PLAYER_COUNT_UNKNOWN",
@@ -66,7 +66,28 @@ Example JSON:
 
 Redis Transaction:
 ```
-JSON.SET game-495ec99e5dd0ecb4b211e8357382fc087fe99777
+JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $ '{
+    "creator": "username0123",
+    "creation_time": "2022-11-30T00:24:08.462Z",
+    "game_hash": "2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3",
+    "turntrack": {
+        "players": "PLAYER_COUNT_UNKNOWN",
+        "space": 1
+    },
+    "cards": {
+        "drawn": []
+    },
+    "active_galley": 0,
+    "players": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    }
+}'
 ```
 
 ## Players join the game
