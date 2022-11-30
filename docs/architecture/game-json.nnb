@@ -1,0 +1,99 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Game JSON\n\nThe state of the game may be represented in a single JSON document. \n\nOther key entities are game _turns_ and _actions_. The actions represented the smallest transactional unit\nwith each action transforming the game JSON file.\n\n## New game template\n\n##### Example JSON:\n\n```json\n{\n    \"turntrack\": {\n        \"players\": \"PLAYER_COUNT_UNKNOWN\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players_joined\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    }\n}    \n```\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Initial state of the game\n\nA new game with no players. (It isn't clear whether this would be a real game state or not. We may require any game to have at least one player.)\n\nThe game hash uniquely identifies the game.\n\n##### Example JSON:\n\n```json\n{\n    \"creator\": \"username0123\",\n    \"creation_time\": \"2022-11-30T00:24:08.462Z\",\n    \"game_hash\": \"2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\",\n    \"turntrack\": {\n        \"players\": \"PLAYER_COUNT_UNKNOWN\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players_joined\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    }\n}    \n```\n\n##### Redis Transaction:\n```\nJSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $ '{\n    \"creator\": \"username0123\",\n    \"creation_time\": \"2022-11-30T00:24:08.462Z\",\n    \"game_hash\": \"2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\",\n    \"turntrack\": {\n        \"players\": \"PLAYER_COUNT_UNKNOWN\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players_joined\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    }\n}'\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "import { createClient } from 'redis';\n\nconst client = createClient({\n  url: 'redis://127.0.0.1:6379'\n});"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "await client.connect();\nconst response = await client.sendCommand([\"JSON.SET\", \"game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\", \"$\", JSON.stringify(\n    {\n        \"creator\": \"username0123\",\n        \"creation_time\": \"2022-11-30T00:24:08.462Z\",\n        \"game_hash\": \"2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\",\n        \"turntrack\": {\n            \"players\": \"PLAYER_COUNT_UNKNOWN\",\n            \"space\": 1\n        },\n        \"cards\": {\n            \"drawn\": []\n        },\n        \"active_galley\": 0,\n        \"players_joined\": 0,\n        \"players\": {},\n        \"bank\": {\n            \"Cargo.WOOD\": 14,\n            \"Cargo.STONE\": 12,\n            \"Cargo.MARBLE\": 12,\n            \"Cargo.WINE\": 12,\n            \"Cargo.GOLD\": 10,\n            \"Cargo.SPICE\": 10\n        }\n    }\n)]);\nawait client.quit();\nconsole.log(response);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "OK",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Players join the game\n\nHere two players join the game. Note that we do not yet know which turn track to use or\nhow many sailors to give each player because we do not yet know how many players are in the game.\n\n##### Example JSON:\n\n```json\n{\n    \"creator\": \"username0123\",\n    \"creation_time\": \"2022-11-30T00:24:08.462Z\",\n    \"game_hash\": \"2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\",\n    \"turntrack\": {\n        \"players\": \"PLAYER_COUNT_UNKNOWN\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players_joined\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    },\n    \"players_joined\": 1,\n    \"players\": {\n        \"P1\": {\n            \"name\": \"player 1 name\",\n            \"color\": \"Color.RED\",\n            \"money\": 5,\n            \"player-id\": \"1234500001\"\n        }   \n   }\n}   \n```\n\n##### Redis Transaction:\n```\nJSON.NUMINCRBY game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players_joined 1\nJSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players.P1 '{\n            \"name\": \"player 1 name\",\n            \"color\": \"Color.RED\",\n            \"money\": 5,\n            \"player-id\": \"1234500001\"\n        }'        \n```\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "await client.connect();\n\nawait client.sendCommand([\"WATCH\", \"game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\"]);\nlet count = await client.sendCommand([\"JSON.GET\", \"game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\", \"$.players_joined\"]);\nconsole.log(\"   count:  \" + count);\n\nawait client.sendCommand([\"MULTI\"]);\nawait client.sendCommand([\"JSON.NUMINCRBY\", \"game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\", \"$.players_joined\", \"1\"]);\nawait client.sendCommand([\"JSON.SET\", \"game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3\", \"$.players.P1\", JSON.stringify(\n    {\n        \"name\": \"player 1 name\",\n        \"color\": \"Color.RED\",\n        \"money\": 5,\n        \"player_id\": \"1234500001\"\n    }\n)]);\n\nconst [numincby, set] = await client.sendCommand([\"EXEC\"]);\nawait client.quit();\n\nconsole.log(\"numincby:  \" + numincby);\nconsole.log(\"     set:  \" + set);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "   count:  [0]",
+                                "     set:  Error: Error occurred on position 12, \"$.players.P[ ---->>>> 1\", expected one of the following: ['start:end:steps'].",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## The number of players is set\n\nWe now four players. Because we know the number of players, we can set the turn track and number \nof sailors for each player. We set a player_count because we could choose how many players in the\ngame even before all the players have joined.\n\n##### Example JSON:\n\n```json\n{\n    \"turntrack\": {\n        \"players\": \"FOUR_PLAYERS\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    },\n    \"players_joined\": 2,\n    \"players_expected\": 4,\n    \"players\": {\n        \"P1\": {\n            \"name\": \"player 1 name\",\n            \"color\": \"Color.RED\",\n            \"money\": 5,\n            \"player-id\": \"1234500001\",\n            \"sailors\": 22\n        },\n        \"P2\": {\n            \"name\": \"player 2 name\",\n            \"color\": \"Color.BLUE\",\n            \"money\": 5,\n            \"player-id\": \"1234500002\"\n        }\n   }\n}   \n```\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "\n## Additional players join\n\nTwo additional players join. We now have enough players to begin the game.\n\n##### Example JSON:\n\n```json\n{\n    \"turntrack\": {\n        \"players\": \"FOUR_PLAYERS\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"players\": {},\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    },\n    \"player_count\": 4,\n    \"players\": {\n        \"P1\": {\n            \"name\": \"player 1 name\",\n            \"color\": \"Color.RED\",\n            \"money\": 5,\n            \"player-id\": \"1234500001\",\n            \"sailors\": 22\n        },\n        \"P2\": {\n            \"name\": \"player 2 name\",\n            \"color\": \"Color.BLUE\",\n            \"money\": 5,\n            \"player-id\": \"1234500002\"\n        },\n        \"P3\": {\n            \"name\": \"player 3 name\",\n            \"color\": \"Color.ORANGE\",\n            \"money\": 5,\n            \"player-id\": \"1234500003\"\n        },\n        \"P4\": {\n            \"name\": \"player 4 name\",\n            \"color\": \"Color.BLACK\",\n            \"money\": 5,\n            \"player-id\": \"1234500004\"\n        }\n   }\n}   \n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "\n## Players choose their initial galleys and ports\n\nHere player 1 selects a port and galley. Three sailors move from the player's supply to his choosen port. \nThree sailors move from the player's supply into the choosen galley. \n\n##### Example JSON:\n\n```json\n{\n    \"turntrack\": {\n        \"players\": \"FOUR_PLAYERS\",\n        \"space\": 1\n    },\n    \"cards\": {\n        \"drawn\": []\n    },\n    \"active_galley\": 0,\n    \"bank\": {\n        \"Cargo.WOOD\": 14,\n        \"Cargo.STONE\": 12,\n        \"Cargo.MARBLE\": 12,\n        \"Cargo.WINE\": 12,\n        \"Cargo.GOLD\": 10,\n        \"Cargo.SPICE\": 10\n    },\n    \"player_count\": 4,\n    \"players\": {\n        \"P1\": {\n            \"name\": \"player 1 name\",\n            \"color\": \"Color.RED\",\n            \"money\": 5,\n            \"player-id\": \"1234500001\",\n            \"sailors\": 16\n        },\n        \"P2\": {\n            \"name\": \"player 2 name\",\n            \"color\": \"Color.BLUE\",\n            \"money\": 5,\n            \"player-id\": \"1234500002\",\n            \"sailors\": 22\n        },\n        \"P3\": {\n            \"name\": \"player 3 name\",\n            \"color\": \"Color.ORANGE\",\n            \"money\": 5,\n            \"player-id\": \"1234500003\",\n            \"sailors\": 22            \n        },\n        \"P4\": {\n            \"name\": \"player 4 name\",\n            \"color\": \"Color.BLACK\",\n            \"money\": 5,\n            \"player-id\": \"1234500004\",\n            \"sailors\": 22            \n        }\n    },\n    \"galleys\": {\n        \"1\": {\n            \"owner\": \"P1\",\n            \"hold\": { \n                \"1\": \"SAILOR\",\n                \"2\": \"SAILOR\",\n                \"3\": \"SAILOR\",\n                \"4\": \"EMPTY\",\n                \"5\": \"EMPTY\"\n            }\n          }\n   },\n    \"ports\": {\n        \"Venezia\": {\n            \"owner\": \"P1\",\n            \"sailors\": 3,\n            \"cargo\": []\n        }\n    }\n}   \n```\n\nTODO we need to add location of galley on the board. That could be stored in either the galley section or the port section, if we add the single sea space to the list of ports.  We will work on transactions and then decide which makes most sense.\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "\n## An ordinary galley game turn\n\nThe order of play is determined by the galleys and galley ownership. \nPlay begins with the first galley. Its owner plays the galley's turn \nand then play passes to the owner of the next galley on the galley wheel.\n\nDuring each galley's turn, the owner of that galley chooses either to take\nan investment round for the galley or completes a series of galley actions. Galley actions \nare grouped into three phases which must always be played in the following order:\n\n* Phase 1 - Load\n* Phase 2 - Move\n* Phase 3 - Unload\n\n### Phase 1 actions\n\nThe following _load_ actions are permitted during phase 1.\n\n#### LOAD_CARGO \n\nPurchase one or more goods from the port at which the galley is moored and load them on the galley. \n\nInputs:\n\nValidation Rules:\n\nExample JSON:\n\n#### SWAP \n\nSwap goods and sailors between two galleys moored in a port owned by the galley owner.\n\nInputs:\n\nValidation Rules:\n\nExample JSON:\n\n#### LOAD_SAILORS\n\nLoad sailors from the port into the galley if the port is owned by the galley owner.\n\n#### UNLOAD_SAILORS\n\nUnload sailors from the galley into the port if the port is owned by the galley owner.\n\n#### WASTE_CARGO\n\nDrop a good from the galley into the sea. \n\n### Phase 2 actions\n\nThe following _move_ actions are permitted during phase 2.\n\n#### MOVE_GALLEY\n\nMove the galley zero or more spaces with the maximum movement being the number of sailors present on the galley. \n\n### Phase 3 actions\n\nThe following _unload_ actions are permitted during phase 3.\n\n#### DELIVER\n\nUnload one or more goods from the galley into the destination port, provided such goods have not already been delivered to that port.\n\n#### CLAIM_PORT\n\nClaim an unowned port by unloading one or more sailors into the port.\n\n#### ATTACK_PORT\n\nEngage a port belonging to another player in battle.\n\n#### ATTACK_GALLEY\n\nEngage a galley belonging to another player in battle.\n\n## Investment round \n\nAs an alternative to an ordinary galley game turn, a player make take an invetment round. When taking an investment round, the galley stays at its current location. The player may then make any number of the following purchases.\n\n| Item      | Cost                        | Note |\n| --------- | --------------------------- | -------- |\n| Sailor    | 1                           | Sailors may be placed in any port owned by the player or galley in a port owned by the player. |\n| Galley    | 1 x number of galleys owned | Galleys may be placed in any port owned by the player. Only one galley may be purchased per investment round.|\n| Basilica  | 2                           | Basilicas may be placed in any port owned by the player in which gold or marble are present. Only one Basilica may exist in any given port. |\n| Fort      | 2                           | Forts may be placed in any port owned by the player in which stone or wood are present.  Only one fort may exist in any given port.|\n\n### Validations that always apply\n\nValidation Rules:\n1. One can't spend more money than one has.\n\n### Investment Round Actions\n\n#### PURCHASE_GALLEY\n\nInputs for galley purchase:\n1. Galley number.\n2. Destination port number.\n\nValidation Rules:\n1. Only one galley may be purchased as part of this investment round.\n2. One may only purchase unowned galleys.\n3. A galley must be placed in one's own port.\n4. A galley must have at least one sailor or it will sink.\n\n#### PURCHASE_SAILORS\n\nInputs for a sailor purchase:\n1. number of sailors.\n2. destination galley or port\n\nValidation Rules:\n1. One can't buy more sailors than one has.\n2. One can't place more sailors in a port than the spaces available for sailors.\n3. Only galleys in a port one ones may accept new sailors.\n4. Only ports one owns can accept new sailors.\n\n#### PURCHASE_BASILICA\n\nInputs for a basilica purchase:\n1. destination port\n\nValidation Rules:\n1. Basilicas must be placed in a port with gold and marble. \n2. Basilicas may not be placed in a port which already has a basilica.\n3. Basilicas cannot be purchased if they cannot be placed.\n\n#### PURCHASE_FORT\n\nInputs for a fort purchase:\n1. destination port \n\nValidation Rules:\n1. Forts must be placed in a port with stone and wood. \n2. Forts may not be placed in a port which already has a fort.\n3. Forts cannot be purchased if they cannot be placed.\n\n#### Other investment round actions\n\nWith an investment round some actions are allowed so that sailors may be placed in newly purchased galleys and distributed to ports.\n\n## Drawing a card and advancing on the turn track\n\n## The scoring round\n\n## The end of the game"
+            ],
+            "outputs": []
+        }
+    ]
+}
