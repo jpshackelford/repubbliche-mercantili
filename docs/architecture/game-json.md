@@ -19,6 +19,7 @@ Example JSON:
         "drawn": []
     },
     "active_galley": 0,
+    "players_joined": 0,
     "players": {},
     "bank": {
         "Cargo.WOOD": 14,
@@ -52,6 +53,7 @@ Example JSON:
         "drawn": []
     },
     "active_galley": 0,
+    "players_joined": 0,
     "players": {},
     "bank": {
         "Cargo.WOOD": 14,
@@ -78,6 +80,7 @@ JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $ '{
         "drawn": []
     },
     "active_galley": 0,
+    "players_joined": 0,
     "players": {},
     "bank": {
         "Cargo.WOOD": 14,
@@ -97,6 +100,9 @@ how many sailors to give each player because we do not yet know how many players
 
 ```json
 {
+    "creator": "username0123",
+    "creation_time": "2022-11-30T00:24:08.462Z",
+    "game_hash": "2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3",
     "turntrack": {
         "players": "PLAYER_COUNT_UNKNOWN",
         "space": 1
@@ -105,6 +111,7 @@ how many sailors to give each player because we do not yet know how many players
         "drawn": []
     },
     "active_galley": 0,
+    "players_joined": 0,
     "players": {},
     "bank": {
         "Cargo.WOOD": 14,
@@ -114,22 +121,30 @@ how many sailors to give each player because we do not yet know how many players
         "Cargo.GOLD": 10,
         "Cargo.SPICE": 10
     },
+    "players_joined": 1,
     "players": {
         "P1": {
             "name": "player 1 name",
             "color": "Color.RED",
             "money": 5,
             "player-id": "1234500001"
-        },
-        "P2": {
-            "name": "player 2 name",
-            "color": "Color.BLUE",
-            "money": 5,
-            "player-id": "1234500002"
         }   
    }
 }   
 ```
+
+Redis Transaction:
+```
+JSON.NUMINCRBY game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players_joined 1
+
+JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $.players.P1 '{
+            "name": "player 1 name",
+            "color": "Color.RED",
+            "money": 5,
+            "player-id": "1234500001"
+        }'        
+```
+
 
 ## The number of players is set
 
@@ -156,7 +171,8 @@ game even before all the players have joined.
         "Cargo.GOLD": 10,
         "Cargo.SPICE": 10
     },
-    "player_count": 4,
+    "players_joined": 2,
+    "players_expected": 4,
     "players": {
         "P1": {
             "name": "player 1 name",
