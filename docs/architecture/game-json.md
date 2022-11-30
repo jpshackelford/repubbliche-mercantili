@@ -5,10 +5,7 @@ The state of the game may be represented in a single JSON document.
 Other key entities are game _turns_ and _actions_. The actions represented the smallest transactional unit
 with each action transforming the game JSON file.
 
-
-## Initial state of the game
-
-A new game with no players. (It isn't clear whether this would be a real game state or not. We may require any game to have at least one player.)
+## New game template
 
 Example JSON:
 
@@ -32,6 +29,44 @@ Example JSON:
         "Cargo.SPICE": 10
     }
 }    
+```
+
+## Initial state of the game
+
+A new game with no players. (It isn't clear whether this would be a real game state or not. We may require any game to have at least one player.)
+
+The game hash uniquely identifies the game.
+
+Example JSON:
+
+```json
+{
+    "creator": "username0123",
+    "creation_time: "2022-11-30T00:24:08.462Z",
+    "game_hash": "2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3",
+    "turntrack": {
+        "players": "PLAYER_COUNT_UNKNOWN",
+        "space": 1
+    },
+    "cards": {
+        "drawn": []
+    },
+    "active_galley": 0,
+    "players": {},
+    "bank": {
+        "Cargo.WOOD": 14,
+        "Cargo.STONE": 12,
+        "Cargo.MARBLE": 12,
+        "Cargo.WINE": 12,
+        "Cargo.GOLD": 10,
+        "Cargo.SPICE": 10
+    }
+}    
+```
+
+Redis Transaction:
+```
+JSON.SET game-495ec99e5dd0ecb4b211e8357382fc087fe99777
 ```
 
 ## Players join the game
@@ -80,9 +115,6 @@ how many sailors to give each player because we do not yet know how many players
 We now four players. Because we know the number of players, we can set the turn track and number 
 of sailors for each player. We set a player_count because we could choose how many players in the
 game even before all the players have joined.
-
-
-TODO Remember to setup the bank with the correct count of available materials.
 
 ```json
 {
