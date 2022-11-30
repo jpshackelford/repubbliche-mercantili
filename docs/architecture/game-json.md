@@ -98,6 +98,8 @@ JSON.SET game-2e9181e8bb0f0ae82d182ead3100c16f9ce99ad3 $ '{
 Here two players join the game. Note that we do not yet know which turn track to use or
 how many sailors to give each player because we do not yet know how many players are in the game.
 
+##### Example JSON:
+
 ```json
 {
     "creator": "username0123",
